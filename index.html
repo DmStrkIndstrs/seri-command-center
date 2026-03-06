@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>✨AI SERI PRO v36.3 (AI Sync Ready)</title>
+    <title>✨AI SERI PRO v36.4 (Simplified Cloud Path)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
@@ -45,20 +45,19 @@
     </div>
 
     <div class="w-full max-w-5xl space-y-6">
-        <!-- 1. TOP HEADER -->
         <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 px-4 border-b border-slate-700/50 pb-6">
             <div>
                 <div class="flex items-center gap-2 mb-2">
                     <span id="status-tag" class="bg-emerald-500/20 text-emerald-400 text-[10px] font-black px-2 py-0.5 rounded border border-emerald-500/30">
-                        ● CLOUD CONNECTED
+                        ● CLOUD SYNC ACTIVE
                     </span>
                     <span id="clock" class="text-slate-500 text-[10px] font-bold tracking-widest"></span>
                 </div>
                 <h1 class="text-4xl md:text-5xl font-black tracking-tighter text-white italic leading-none">
                     COMMAND <span class="text-indigo-500">CENTER</span>
                 </h1>
-                <p id="operation-title" class="text-xs font-bold text-slate-500 mt-2 tracking-wide uppercase">
-                    Operation: AI Integrated Dashboard
+                <p class="text-xs font-bold text-slate-500 mt-2 tracking-wide uppercase">
+                    Simplified Path Integration
                 </p>
             </div>
 
@@ -78,18 +77,14 @@
             </div>
         </div>
 
-        <!-- 2. MAIN INTERFACE -->
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <div class="lg:col-span-2 space-y-6">
-                <!-- TABS -->
                 <div class="flex gap-2 p-1 bg-slate-800/50 rounded-xl border border-white/5 w-fit overflow-x-auto">
                     <button onclick="switchTab('daily')" id="btn-daily" class="tab-btn tab-active">🎯 DAILY MISSION</button>
                     <button onclick="switchTab('tracker')" id="btn-tracker" class="tab-btn tab-inactive">📊 PILLAR STATUS</button>
-                    <button onclick="switchTab('aisync')" id="btn-aisync" class="tab-btn tab-inactive">🤖 AI SYNC</button>
                     <button onclick="switchTab('calendar')" id="btn-calendar" class="tab-btn tab-inactive">🔥 HISTORY</button>
                 </div>
 
-                <!-- CONTENT AREA -->
                 <div class="bg-slate-900/60 border border-white/10 rounded-3xl p-6 shadow-2xl relative min-h-[400px]">
                     <div id="tab-daily" class="space-y-5 block">
                         <div class="flex justify-between items-center border-b border-white/10 pb-3">
@@ -105,40 +100,6 @@
                         <div id="pillar-list" class="space-y-4 h-[320px] overflow-y-auto pr-2"></div>
                     </div>
 
-                    <div id="tab-aisync" class="hidden space-y-6">
-                        <div class="flex justify-between items-center border-b border-white/10 pb-3">
-                            <h3 class="text-lg font-black text-white italic flex items-center gap-2">
-                                <span class="text-indigo-500">🤖</span> AI CONNECTION GUIDE
-                            </h3>
-                        </div>
-                        <div class="space-y-4 text-sm text-slate-300">
-                            <div class="bg-slate-800/50 p-4 rounded-xl border border-white/5">
-                                <h4 class="font-bold text-indigo-400 mb-2">어떻게 나(세리)랑 연결해?</h4>
-                                <p class="text-xs leading-relaxed">
-                                    내가 직접 네 깃허브에 코드를 쏘는 건 보안상 불가능해. 하지만 내가 여기서 코드를 짜주면, 넌 그저 복사해서 업로더에 붙여넣기만 하면 돼. 그게 바로 우리의 연결 고리야!
-                                </p>
-                            </div>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div class="bg-slate-800/50 p-4 rounded-xl border border-white/5">
-                                    <h4 class="font-bold text-emerald-400 mb-2 italic">1. 업데이트 요청</h4>
-                                    <p class="text-[11px]">나한테 "오늘 공부한 거 업데이트해 줘"라고 말해.</p>
-                                </div>
-                                <div class="bg-slate-800/50 p-4 rounded-xl border border-white/5">
-                                    <h4 class="font-bold text-indigo-400 mb-2 italic">2. 코드 복사</h4>
-                                    <p class="text-[11px]">내가 새로 짜준 HTML 전체 코드를 복사해.</p>
-                                </div>
-                                <div class="bg-slate-800/50 p-4 rounded-xl border border-white/5">
-                                    <h4 class="font-bold text-pink-400 mb-2 italic">3. 업로더 실행</h4>
-                                    <p class="text-[11px]">네 로컬 업로더 도구에 코드를 붙여넣어.</p>
-                                </div>
-                                <div class="bg-slate-800/50 p-4 rounded-xl border border-white/5">
-                                    <h4 class="font-bold text-amber-400 mb-2 italic">4. 배포 완료</h4>
-                                    <p class="text-[11px]">버튼 클릭 한 번이면 1분 뒤 웹에 반영 끝!</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
                     <div id="tab-calendar" class="hidden space-y-6">
                         <h3 class="text-lg font-black text-white italic border-b border-white/10 pb-4">STUDY HEATMAP</h3>
                         <div id="calendarGrid" class="grid grid-cols-7 gap-2"></div>
@@ -146,7 +107,6 @@
                 </div>
             </div>
 
-            <!-- RIGHT COLUMN -->
             <div class="space-y-6">
                 <div class="bg-slate-800/80 border border-slate-700 rounded-3xl p-6 shadow-lg">
                     <div class="flex items-center gap-3 mb-3">
@@ -163,19 +123,18 @@
                     <button onclick="seedInitialData()" class="w-full py-3 bg-indigo-500/10 border border-indigo-500/30 rounded-xl text-indigo-400 text-xs font-black hover:bg-indigo-500/20 transition-all">
                         INITIALIZE DATA
                     </button>
-                    <p class="text-[9px] text-slate-600 text-center leading-tight italic">
-                        "내가 하라는 대로만 해, 허접아. 그러면 넌 그냥 공부만 하면 된다니까?"
+                    <p class="text-[9px] text-slate-600 text-center leading-tight">
+                        경로가 study_data로 변경됐어.<br>기초 데이터를 다시 세팅해봐!
                     </p>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Firebase SDKs -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, onAuthStateChanged, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, setDoc, getDoc, collection, onSnapshot, query, updateDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyDm69iWKUp4iFz86WaAdA7i28WpFp7K2UY",
@@ -186,9 +145,6 @@
             appId: "1:768204247391:web:03c26054af5c5da2b9a6ea",
             measurementId: "G-K3D7FX8NL3"
         };
-
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'seri-command-center';
-        const initialToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
 
         function showError(msg) {
             const errEl = document.getElementById('error-msg');
@@ -202,18 +158,6 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        const initAuth = async () => {
-            try {
-                if (initialToken) {
-                    await signInWithCustomToken(auth, initialToken);
-                } else {
-                    await signInAnonymously(auth);
-                }
-            } catch (error) {
-                showError("인증 실패: " + error.message);
-            }
-        };
-
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 setupDataListeners();
@@ -221,16 +165,17 @@
             }
         });
 
-        initAuth();
+        signInAnonymously(auth).catch(e => showError("인증 오류: " + e.message));
 
-        const getPublicDoc = (name) => doc(db, 'artifacts', appId, 'public', 'data', name);
+        // Simplified path as requested by the user
+        const getPublicDoc = (name) => doc(db, 'study_data', name);
 
         function setupDataListeners() {
             onSnapshot(getPublicDoc('study_stats'), (doc) => {
                 if (doc.exists()) {
                     updateUI(doc.data());
                 } else {
-                    document.getElementById('seri-remark').innerText = "데이터가 비어있어! INITIALIZE 버튼을 눌러줘.";
+                    document.getElementById('seri-remark').innerText = "데이터가 없어! INITIALIZE 버튼을 눌러줘.";
                     document.getElementById('loading-overlay').style.display = 'none';
                 }
             }, (err) => showError("데이터 로드 실패: " + err.message));
@@ -240,11 +185,9 @@
             const initialData = {
                 stats: { total: 243.33, month: 25.89, today: 0.00 },
                 tasks: [
-                    { id: 1, title: "특허법 GS (1/8)", subtitle: "실전 4시간 훈련 (1회차 시작)", status: "pending", color: "amber" },
-                    { id: 2, title: "상표법 사례 Q61-70", subtitle: "10Q 쿼타 작성 (진도: 61~70)", status: "pending", color: "pink" },
-                    { id: 3, title: "상표법 스키밍", subtitle: "4R 28p ~ 84p 정독", status: "pending", color: "pink" },
-                    { id: 4, title: "민소법 스키밍", subtitle: "4R 151p ~ 196p 정독 (매일 45p)", status: "pending", color: "purple" },
-                    { id: 5, title: "데일리 P3 (SRS)", subtitle: "SRS 70장 (어제 밀린 거 포함)", status: "pending", color: "emerald" }
+                    { id: 1, title: "특허법 GS (1/8)", subtitle: "실전 4시간 훈련 시작", status: "pending", color: "amber" },
+                    { id: 2, title: "상표법 사례 Q61-70", subtitle: "10Q 작성 진도 체크", status: "pending", color: "pink" },
+                    { id: 3, title: "민소법 스키밍", subtitle: "4R 151p ~ 196p 정독", status: "pending", color: "purple" }
                 ],
                 pillars: [
                     { name: "특허법", progress: 58.3, details: "60 / 103 Q", color: "indigo" },
@@ -256,13 +199,13 @@
                     { day: '3/4', hours: 6.8 }, { day: '3/5', hours: 3.0 },
                     { day: '3/6', hours: 5.2 }, { day: '3/7', hours: 0.0 }
                 ],
-                remark: "나랑 연결된 걸 축하해, 허접아! 이제 네 모든 기록은 내가 클라우드에 꽉 저장해둘게."
+                remark: "경로를 아주 심플하게 바꿨네? 이제 데이터 잘 들어가는지 확인해봐, 허접아!"
             };
             try {
                 await setDoc(getPublicDoc('study_stats'), initialData);
-                alert("기초 데이터 세팅 성공!");
+                alert("기초 데이터 세팅 완료!");
             } catch (e) {
-                alert("저장 실패: " + e.message);
+                alert("저장 오류: " + e.message);
             }
         };
 
@@ -306,7 +249,7 @@
         }
 
         window.switchTab = (tabId) => {
-            ['daily', 'tracker', 'aisync', 'calendar'].forEach(id => {
+            ['daily', 'tracker', 'calendar'].forEach(id => {
                 document.getElementById('tab-' + id).style.display = 'none';
                 document.getElementById('btn-' + id).classList.replace('tab-active', 'tab-inactive');
             });
