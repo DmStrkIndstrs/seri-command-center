@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>✨AI SERI PRO v36.6 (Error Fixed)</title>
+    <title>✨AI SERI PRO v36.7 (Production Live)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
@@ -58,7 +58,7 @@
                     COMMAND <span class="text-indigo-500">CENTER</span>
                 </h1>
                 <p class="text-xs font-bold text-slate-500 mt-2 tracking-wide uppercase">
-                    Operation: Full Pillar Recovery (v36.6)
+                    Operation: Production Live Environment
                 </p>
             </div>
 
@@ -100,10 +100,8 @@
                     </div>
 
                     <div id="tab-tracker" class="hidden space-y-6">
-                        <h3 class="text-lg font-black text-white italic border-b border-white/10 pb-4">PILLAR STATUS (전체 누적 달성률)</h3>
-                        <div id="pillar-list" class="space-y-6 h-[320px] overflow-y-auto pr-2">
-                            <!-- Pillars with nested progress will be injected here -->
-                        </div>
+                        <h3 class="text-lg font-black text-white italic border-b border-white/10 pb-4">PILLAR STATUS</h3>
+                        <div id="pillar-list" class="space-y-6 h-[320px] overflow-y-auto pr-2"></div>
                     </div>
 
                     <div id="tab-calendar" class="hidden space-y-6">
@@ -113,6 +111,7 @@
                 </div>
             </div>
 
+            <!-- RIGHT COLUMN -->
             <div class="space-y-6">
                 <div class="bg-slate-800/80 border border-slate-700 rounded-3xl p-6 shadow-lg">
                     <div class="flex items-center gap-3 mb-3">
@@ -125,22 +124,26 @@
                 </div>
 
                 <div class="bg-slate-900/50 border border-white/5 rounded-3xl p-6 space-y-4">
-                    <h4 class="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-2">DATABASE CONTROLS</h4>
-                    <button onclick="seedInitialData()" class="w-full py-3 bg-indigo-500/10 border border-indigo-500/30 rounded-xl text-indigo-400 text-xs font-black hover:bg-indigo-500/20 transition-all">
-                        INITIALIZE DATA (Full Pillar)
-                    </button>
-                    <p class="text-[9px] text-slate-600 text-center leading-tight">
-                        Pillar 정보가 사라졌다면 위 버튼을 클릭해.<br>세부 항목까지 포함된 데이터가 세팅될 거야.
+                    <h4 class="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-2">SYSTEM STATUS</h4>
+                    <div class="p-4 bg-emerald-500/10 border border-emerald-500/20 rounded-xl">
+                        <p class="text-[11px] text-emerald-400 font-bold leading-relaxed">
+                            실시간 업데이트 모드 가동 중<br>
+                            외부 업로더를 통해 데이터를 갱신하세요.
+                        </p>
+                    </div>
+                    <p class="text-[9px] text-slate-600 text-center leading-tight italic">
+                        "이제 진짜 벼랑 끝이야, 허접아. 데이터로 네 나태함이 박제될 테니까!"
                     </p>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- Firebase SDKs -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getFirestore, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyDm69iWKUp4iFz86WaAdA7i28WpFp7K2UY",
@@ -180,63 +183,13 @@
                 if (doc.exists()) {
                     updateUI(doc.data());
                 } else {
-                    document.getElementById('seri-remark').innerText = "데이터가 없어! INITIALIZE 버튼을 눌러줘.";
+                    document.getElementById('seri-remark').innerText = "데이터가 없어! 업로더로 데이터를 쏴줘.";
                     document.getElementById('loading-overlay').style.display = 'none';
                 }
             }, (err) => showError("데이터 로드 실패: " + err.message));
         }
 
-        window.seedInitialData = async () => {
-            const initialData = {
-                stats: { total: 243.33, month: 25.89, today: 0.00 },
-                tasks: [
-                    { id: 1, title: "특허법 GS (1/8)", subtitle: "실전 4시간 훈련 시작", color: "amber" },
-                    { id: 2, title: "상표법 사례 Q61-70", subtitle: "10Q 작성 (어제 60Q 완료)", color: "pink" },
-                    { id: 3, title: "상표법 스키밍", subtitle: "4R 28p ~ 84p 정독", color: "pink" },
-                    { id: 4, title: "민소법 스키밍", subtitle: "4R 151p ~ 196p 정독", color: "purple" },
-                    { id: 5, title: "데일리 P3 (SRS)", subtitle: "SRS 70장 (어제 미달 포함)", color: "emerald" }
-                ],
-                pillars: [
-                    { 
-                        name: "특허법 (ACTIVE DUAL-TRACK)", color: "indigo", badge: "FRI MISSION",
-                        subItems: [
-                            { label: "P1 특허(하) 사례", detail: "60 / 103 Q", percent: 58.3 },
-                            { label: "P1 특허(상) 강의", detail: "14 / 23 Lec", percent: 60.8 },
-                            { label: "P2 스키밍", detail: "2134 / 3675 p", percent: 58.1 }
-                        ]
-                    },
-                    { 
-                        name: "민사소송법", color: "purple",
-                        subItems: [
-                            { label: "P1 사례집", detail: "123 / 258 Q", percent: 47.6 },
-                            { label: "P2 스키밍", detail: "2437 / 7620 p", percent: 32.0 },
-                            { label: "P2 핸드북", detail: "141 / 519 p", percent: 27.1 }
-                        ]
-                    },
-                    { 
-                        name: "상표법", color: "pink",
-                        subItems: [
-                            { label: "P1 사례집", detail: "60 / 130 Q", percent: 46.2 },
-                            { label: "P2 스키밍", detail: "1206 / 3144 p", percent: 38.4 }
-                        ]
-                    }
-                ],
-                history: [
-                    { day: '3/1', hours: 0.0 }, { day: '3/2', hours: 5.6 }, { day: '3/3', hours: 5.3 },
-                    { day: '3/4', hours: 6.8 }, { day: '3/5', hours: 3.0 }, { day: '3/6', hours: 5.2 }, { day: '3/7', hours: 0.0 }
-                ],
-                remark: "과목별 세부 Pillar까지 완벽하게 복구했어. 이제 핑계 대지 말고 공부나 해, 허접아!"
-            };
-            try {
-                await setDoc(getPublicDoc('study_stats'), initialData);
-                alert("기초 데이터 세팅 완료! Pillar 정보가 복구되었습니다.");
-            } catch (e) {
-                alert("저장 오류: " + e.message);
-            }
-        };
-
         function updateUI(data) {
-            // Null safety check for the entire data object
             if (!data) return;
 
             document.getElementById('stat-total').innerHTML = `${data.stats?.total || 0}<span class="text-xs ml-0.5">H</span>`;
@@ -244,7 +197,6 @@
             document.getElementById('stat-today').innerHTML = `${data.stats?.today || 0}<span class="text-xs ml-0.5">H</span>`;
             document.getElementById('seri-remark').innerText = data.remark || "";
 
-            // Update Tasks with safety check
             const tasks = data.tasks || [];
             document.getElementById('task-list').innerHTML = tasks.map(t => `
                 <div class="flex items-center gap-4 p-4 rounded-xl border bg-slate-800/80 border-${t.color || 'slate'}-500/30">
@@ -258,7 +210,6 @@
                 </div>
             `).join('');
 
-            // Update Pillars with safety check
             const pillars = data.pillars || [];
             document.getElementById('pillar-list').innerHTML = pillars.map(p => {
                 const subItems = p.subItems || [];
@@ -287,7 +238,6 @@
                 </div>
             `}).join('');
 
-            // Update History with safety check
             const history = data.history || [];
             document.getElementById('calendarGrid').innerHTML = history.map((h, i) => {
                 let color = 'bg-slate-800/30 opacity-50';
