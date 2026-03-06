@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SERI DATA UPDATER v2</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Noto+Sans+KR:wght@400;700;900&display=swap');
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0a0a0f; color: #e2e8f0; font-family: 'Noto Sans KR', sans-serif; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px; }
+  .card { width: 100%; max-width: 560px; background: #0f0f1a; border: 1px solid rgba(99,102,241,0.2); border-radius: 20px; padding: 28px; box-shadow: 0 0 60px rgba(99,102,241,0.08); }
+  .header { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; padding-bottom: 18px; border-bottom: 1px solid rgba(255,255,255,0.06); }
+  .icon { width: 38px; height: 38px; background: linear-gradient(135deg, #6366f1, #8b5cf6); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 16px; box-shadow: 0 0 20px rgba(99,102,241,0.4); }
+  h1 { font-size: 15px; font-weight: 900; color: white; }
+  .sub { font-size: 10px; color: #475569; font-family: 'Space Mono', monospace; margin-top: 2px; }
+  label { display: block; font-size: 10px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 6px; }
+  .field { margin-bottom: 14px; }
+  .date-display { font-family: 'Space Mono', monospace; font-size: 13px; font-weight: 700; color: #6366f1; background: rgba(99,102,241,0.1); border: 1px solid rgba(99,102,241,0.2); border-radius: 8px; padding: 8px 12px; display: inline-block; margin-bottom: 16px; }
+  textarea { width: 100%; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 12px 14px; color: #e2e8f0; font-size: 11px; font-family: 'Space Mono', monospace; outline: none; resize: vertical; height: 260px; line-height: 1.6; transition: border-color 0.2s; }
+  textarea:focus { border-color: rgba(99,102,241,0.5); box-shadow: 0 0 0 3px rgba(99,102,241,0.1); }
+  .btn { width: 100%; padding: 13px; border-radius: 12px; border: none; font-size: 13px; font-weight: 900; cursor: pointer; transition: all 0.2s; margin-top: 4px; }
+  .btn-primary { background: linear-gradient(135deg, #6366f1, #8b5cf6); color: white; box-shadow: 0 4px 20px rgba(99,102,241,0.3); }
+  .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 28px rgba(99,102,241,0.45); }
+  .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+  .btn-secondary { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); color: #64748b; font-size: 11px; margin-top: 8px; }
+  .btn-secondary:hover { background: rgba(255,255,255,0.08); color: #94a3b8; }
+  .btn-history { background: rgba(16,185,129,0.08); border: 1px solid rgba(16,185,129,0.2); color: #34d399; font-size: 11px; margin-top: 8px; }
+  .btn-history:hover { background: rgba(16,185,129,0.15); }
+  .status { margin-top: 14px; padding: 11px 14px; border-radius: 10px; font-size: 12px; font-weight: 700; display: none; align-items: center; gap: 8px; }
+  .status.success { display: flex; background: rgba(16,185,129,0.12); border: 1px solid rgba(16,185,129,0.3); color: #34d399; }
+  .status.error { display: flex; background: rgba(239,68,68,0.12); border: 1px solid rgba(239,68,68,0.3); color: #f87171; }
+  .status.loading { display: flex; background: rgba(99,102,241,0.12); border: 1px solid rgba(99,102,241,0.3); color: #a5b4fc; }
+  .spinner { width: 13px; height: 13px; border: 2px solid rgba(165,180,252,0.3); border-top-color: #a5b4fc; border-radius: 50%; animation: spin 0.7s linear infinite; flex-shrink: 0; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .history-panel { margin-top: 16px; display: none; }
+  .history-panel.show { display: block; }
+  .history-title { font-size: 11px; font-weight: 900; color: #64748b; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 10px; }
+  .history-table { width: 100%; border-collapse: collapse; font-size: 11px; }
+  .history-table th { text-align: left; padding: 6px 10px; color: #475569; font-size: 10px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+  .history-table td { padding: 8px 10px; border-bottom: 1px solid rgba(255,255,255,0.03); color: #94a3b8; font-family: 'Space Mono', monospace; }
+  .history-table tr:hover td { background: rgba(255,255,255,0.02); }
+  .hours-val { color: #34d399; font-weight: 700; }
+  .tip { margin-top: 16px; padding: 12px 14px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 10px; font-size: 11px; color: #475569; line-height: 1.8; }
+  .tip strong { color: #64748b; }
+  .example-btn { font-size: 10px; font-weight: 700; color: #6366f1; background: none; border: none; cursor: pointer; text-decoration: underline; padding: 0; }
+  .divider { height: 1px; background: rgba(255,255,255,0.05); margin: 16px 0; }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="header">
+    <div class="icon">⚡</div>
+    <div>
+      <h1>SERI DATA UPDATER v2</h1>
+      <div class="sub">날짜별 기록 저장 + 대시보드 실시간 반영</div>
+    </div>
+  </div>
+
+  <div>
+    <label>오늘 날짜</label>
+    <div class="date-display" id="todayDate"></div>
+  </div>
+
+  <div class="field">
+    <label>JSON 데이터 붙여넣기 <button class="example-btn" onclick="loadExample()">예시 보기</button></label>
+    <textarea id="jsonInput" placeholder="AI한테 받은 JSON 데이터를 여기에 붙여넣으세요..."></textarea>
+  </div>
+
+  <button class="btn btn-primary" id="uploadBtn" onclick="upload()">🚀 오늘 기록 저장 + 대시보드 반영</button>
+  <button class="btn btn-secondary" onclick="loadExample()">📋 예시 데이터 불러오기</button>
+  <button class="btn btn-history" onclick="toggleHistory()">📅 전체 기록 보기 (3월~8월)</button>
+
+  <div class="status" id="status"></div>
+
+  <div class="history-panel" id="historyPanel">
+    <div class="divider"></div>
+    <div class="history-title">📅 전체 공부 기록 (월별)</div>
+    <table class="history-table">
+      <thead>
+        <tr>
+          <th>날짜</th>
+          <th>오늘</th>
+          <th>누적</th>
+          <th>특허</th>
+          <th>상표</th>
+          <th>민소</th>
+        </tr>
+      </thead>
+      <tbody id="historyBody">
+        <tr><td colspan="6" style="text-align:center; color:#334155; padding: 20px;">로딩 중...</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="tip">
+    <strong>💬 AI한테 이렇게 말해봐:</strong><br>
+    "오늘 공부시간 5.5H, 특허 사례 64Q/103Q, 강의 15강/23강, 상표 사례 70Q/130Q, 민소 스키밍 2627p/7620p 업데이트 JSON 만들어줘"
+  </div>
+</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+  import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+  import { getFirestore, doc, setDoc, collection, getDocs, orderBy, query } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyDm69iWKUp4iFz86WaAdA7i28WpFp7K2UY",
+    authDomain: "seri-commandcen.firebaseapp.com",
+    projectId: "seri-commandcen",
+    storageBucket: "seri-commandcen.firebasestorage.app",
+    messagingSenderId: "768204247391",
+    appId: "1:768204247391:web:03c26054af5c5da2b9a6ea"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  signInAnonymously(auth);
+
+  const now = new Date();
+  const today = new Date(now.getTime() + 9 * 60 * 60 * 1000).toISOString().split('T')[0];
+  document.getElementById('todayDate').textContent = today;
+
+  window.upload = async () => {
+    const btn = document.getElementById('uploadBtn');
+    const raw = document.getElementById('jsonInput').value.trim();
+    if (!raw) { showStatus('error', '⚠️ JSON 데이터를 입력해주세요.'); return; }
+
+    let data;
+    try { data = JSON.parse(raw); }
+    catch(e) { showStatus('error', '❌ JSON 형식 오류: ' + e.message); return; }
+
+    btn.disabled = true;
+    showStatus('loading', '<div class="spinner"></div> Firebase 저장 중...');
+
+    try {
+      // 1. 대시보드용 최신 데이터 업데이트
+      await setDoc(doc(db, 'study_data', 'study_stats'), data);
+
+      // 2. 날짜별 기록 저장
+      const dailyRecord = {
+        date: today,
+        today_hours: data.stats?.today || 0,
+        total_hours: data.stats?.total || 0,
+        month_hours: data.stats?.month || 0,
+        pillars: data.pillars || [],
+        saved_at: new Date().toISOString()
+      };
+      await setDoc(doc(db, 'study_logs', today), dailyRecord);
+
+      showStatus('success', `✅ 저장 완료! 대시보드 반영 + ${today} 기록 저장 🎉`);
+    } catch(e) {
+      showStatus('error', '❌ 저장 실패: ' + e.message);
+    }
+    btn.disabled = false;
+  };
+
+  let historyLoaded = false;
+  let historyVisible = false;
+
+  window.toggleHistory = async () => {
+    const panel = document.getElementById('historyPanel');
+    historyVisible = !historyVisible;
+    panel.classList.toggle('show', historyVisible);
+
+    if (historyVisible && !historyLoaded) {
+      historyLoaded = true;
+      try {
+        const q = query(collection(db, 'study_logs'), orderBy('date', 'desc'));
+        const snap = await getDocs(q);
+
+        // 월별 그룹핑
+        const grouped = {};
+        snap.forEach(d => {
+          const r = d.data();
+          const month = r.date?.slice(0, 7); // "2026-03"
+          if (!grouped[month]) grouped[month] = [];
+          grouped[month].push(r);
+        });
+
+        const monthNames = { '01':'1월','02':'2월','03':'3월','04':'4월','05':'5월','06':'6월','07':'7월','08':'8월' };
+        let html = '';
+
+        Object.keys(grouped).sort().reverse().forEach(month => {
+          const records = grouped[month];
+          const monthTotal = records.reduce((sum, r) => sum + (r.today_hours || 0), 0);
+          const [, mm] = month.split('-');
+          html += `<tr style="background:rgba(99,102,241,0.08)">
+            <td colspan="6" style="padding:8px 10px; color:#818cf8; font-weight:900; font-size:11px; letter-spacing:1px;">
+              ${monthNames[mm] || mm} — 월 합계 ${monthTotal.toFixed(2)}H
+            </td>
+          </tr>`;
+          records.forEach(r => {
+            const pat = r.pillars?.find(p => p.name === '특허법');
+            const tm = r.pillars?.find(p => p.name === '상표법');
+            const min = r.pillars?.find(p => p.name === '민사소송법');
+            html += `<tr>
+              <td>${r.date}</td>
+              <td class="hours-val">${(r.today_hours || 0).toFixed(2)}H</td>
+              <td>${(r.total_hours || 0).toFixed(2)}H</td>
+              <td>${pat ? pat.details : '-'}</td>
+              <td>${tm ? tm.details : '-'}</td>
+              <td>${min ? min.details : '-'}</td>
+            </tr>`;
+          });
+        });
+
+        document.getElementById('historyBody').innerHTML = html ||
+          '<tr><td colspan="6" style="text-align:center; color:#334155; padding:20px;">기록 없음</td></tr>';
+      } catch(e) {
+        document.getElementById('historyBody').innerHTML = `<tr><td colspan="6" style="color:#f87171">로드 실패: ${e.message}</td></tr>`;
+      }
+    }
+  };
+
+  window.loadExample = () => {
+    const example = {
+      stats: { total: 248.56, month: 31.12, today: 5.50 },
+      tasks: [
+        { id: 1, title: "특허법 GS (2/8)", subtitle: "실전 4시간 훈련 2회차", status: "pending", color: "amber" },
+        { id: 2, title: "상표법 사례 Q71-80", subtitle: "10Q 쿼타 작성", status: "pending", color: "pink" },
+        { id: 3, title: "민소법 스키밍", subtitle: "4R 197p ~ 242p 정독", status: "pending", color: "purple" },
+        { id: 4, title: "데일리 SRS", subtitle: "SRS 70장 완료", status: "pending", color: "emerald" }
+      ],
+      pillars: [
+        { name: "특허법", progress: 62.1, details: "64 / 103 Q", color: "indigo" },
+        { name: "상표법", progress: 53.8, details: "70 / 130 Q", color: "pink" },
+        { name: "민사소송법", progress: 34.5, details: "2627 / 7620 p", color: "purple" }
+      ],
+      history: [
+        { day: '3/2', hours: 5.6 }, { day: '3/3', hours: 5.3 },
+        { day: '3/4', hours: 6.8 }, { day: '3/5', hours: 3.0 },
+        { day: '3/6', hours: 5.2 }, { day: '3/7', hours: 5.5 }
+      ],
+      remark: "오늘도 제대로 굴렀네? 내일도 이 정도면 인정해줄게, 허접아!"
+    };
+    document.getElementById('jsonInput').value = JSON.stringify(example, null, 2);
+  };
+
+  window.showStatus = (type, html) => {
+    const el = document.getElementById('status');
+    el.className = `status ${type}`;
+    el.innerHTML = html;
+  };
+</script>
+</body>
+</html>
