@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>✨AI SERI PRO v37.3 (Weekly Cycle Restored)</title>
+    <title>✨AI SERI PRO v37.8 (No Reset Protocol)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
@@ -54,95 +54,110 @@
 </head>
 <body class="flex flex-col items-center">
 
+    <!-- Loading Screen -->
     <div id="loading-overlay" class="fixed inset-0 bg-slate-900 z-50 flex flex-col items-center justify-center gap-4">
         <div id="loading-spinner" class="w-12 h-12 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
-        <div id="loading-text" class="font-black text-indigo-500 italic tracking-widest">SYNCING DATA...</div>
+        <div id="loading-text" class="font-black text-indigo-500 italic tracking-[0.3em] uppercase">Securing Protocol...</div>
     </div>
 
     <div class="w-full max-w-5xl space-y-6">
+        <!-- TOP HEADER -->
         <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 px-4 border-b border-slate-700/50 pb-6">
             <div>
                 <div class="flex items-center gap-2 mb-2">
-                    <span id="status-tag" class="bg-emerald-500/20 text-emerald-400 text-[10px] font-black px-2 py-0.5 rounded border border-emerald-500/30">
-                        ● CLOUD LIVE
+                    <span id="status-tag" class="bg-emerald-500/20 text-emerald-400 text-[10px] font-black px-2 py-0.5 rounded border border-emerald-500/30 uppercase">
+                        ● System Master Active
                     </span>
                     <span id="clock" class="text-slate-500 text-[10px] font-bold tracking-widest"></span>
                 </div>
-                <h1 class="text-4xl md:text-5xl font-black tracking-tighter text-white italic leading-none">
-                    COMMAND <span class="text-indigo-500">CENTER</span>
+                <h1 class="text-4xl md:text-5xl font-black tracking-tighter text-white italic leading-none uppercase">
+                    Command <span class="text-indigo-500">Center</span>
                 </h1>
                 <p class="text-xs font-bold text-slate-500 mt-2 tracking-wide uppercase">
-                    Integrated Operation: v5.9.1 Master Roadmap
+                    v5.9.1 Roadmap Integrated Environment
                 </p>
             </div>
 
             <div class="flex gap-4">
                 <div class="p-3 rounded-xl border border-white/5 bg-slate-800/40 text-center min-w-[80px]">
                     <div class="text-[9px] font-bold text-slate-500 uppercase">2026 Total</div>
-                    <div id="stat-total" class="text-2xl font-black text-indigo-400">0.00<span class="text-xs ml-0.5">H</span></div>
+                    <div id="stat-total" class="text-2xl font-black text-indigo-400">0.0<span class="text-xs ml-0.5">H</span></div>
                 </div>
                 <div class="p-3 rounded-xl border border-white/5 bg-slate-800/40 text-center min-w-[80px]">
-                    <div class="text-[9px] font-bold text-slate-500 uppercase">Mar Accum</div>
-                    <div id="stat-month" class="text-2xl font-black text-emerald-400">0.00<span class="text-xs ml-0.5">H</span></div>
+                    <div class="text-[9px] font-bold text-slate-500 uppercase">March</div>
+                    <div id="stat-month" class="text-2xl font-black text-emerald-400">0.0<span class="text-xs ml-0.5">H</span></div>
                 </div>
                 <div class="p-3 rounded-xl border border-amber-500/30 bg-amber-500/10 text-center min-w-[80px] shadow-lg shadow-amber-500/20">
                     <div class="text-[9px] font-bold text-amber-300 uppercase">Today</div>
-                    <div id="stat-today" class="text-2xl font-black text-amber-400">0.00<span class="text-xs ml-0.5">H</span></div>
+                    <div id="stat-today" class="text-2xl font-black text-amber-400">0.0<span class="text-xs ml-0.5">H</span></div>
                 </div>
             </div>
         </div>
 
+        <!-- MAIN INTERFACE -->
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <div class="lg:col-span-2 space-y-6">
+                <!-- TABS -->
                 <div class="flex gap-2 p-1 bg-slate-800/50 rounded-xl border border-white/5 w-fit overflow-x-auto">
                     <button onclick="switchTab('daily')" id="btn-daily" class="tab-btn tab-active">🎯 DAILY</button>
                     <button onclick="switchTab('tracker')" id="btn-tracker" class="tab-btn tab-inactive">📊 PILLARS</button>
                     <button onclick="switchTab('schedule')" id="btn-schedule" class="tab-btn tab-inactive">🗓️ WEEKLY</button>
-                    <button onclick="switchTab('calendar')" id="btn-calendar" class="tab-btn tab-inactive">🔥 HEATMAP</button>
+                    <button onclick="switchTab('calendar')" id="btn-calendar" class="tab-btn tab-inactive">🔥 HISTORY</button>
                 </div>
 
-                <div class="bg-slate-900/60 border border-white/10 rounded-3xl p-6 shadow-2xl relative min-h-[400px]">
+                <!-- CONTENT AREA -->
+                <div class="bg-slate-900/60 border border-white/10 rounded-3xl p-6 shadow-2xl relative min-h-[450px]">
+                    
                     <div id="tab-daily" class="space-y-5 block">
-                        <div id="task-list" class="space-y-3 h-[320px] overflow-y-auto pr-2"></div>
+                        <h3 class="text-lg font-black text-white italic border-b border-white/10 pb-3 flex items-center gap-2 uppercase">
+                            <span class="text-indigo-500">⚡</span> Mission Protocol (Saturday)
+                        </h3>
+                        <div id="task-list" class="space-y-3 h-[340px] overflow-y-auto pr-2"></div>
                     </div>
 
                     <div id="tab-tracker" class="hidden space-y-6">
-                        <div id="pillar-list" class="space-y-6 h-[320px] overflow-y-auto pr-2"></div>
+                        <h3 class="text-lg font-black text-white italic border-b border-white/10 pb-3 uppercase tracking-tight">Core Pillar Progress</h3>
+                        <div id="pillar-list" class="space-y-6 h-[340px] overflow-y-auto pr-2"></div>
                     </div>
 
                     <div id="tab-schedule" class="hidden space-y-4">
-                        <h3 class="text-lg font-black text-white italic border-b border-white/10 pb-4">WEEKLY INTERLEAVING CYCLE</h3>
-                        <div id="schedule-list" class="grid grid-cols-1 gap-3 h-[320px] overflow-y-auto pr-2">
-                            <!-- Weekly schedule data injected here -->
-                        </div>
+                        <h3 class="text-lg font-black text-white italic border-b border-white/10 pb-3 uppercase">Weekly Interleaving Cycle</h3>
+                        <div id="schedule-list" class="grid grid-cols-1 gap-3 h-[340px] overflow-y-auto pr-2"></div>
                     </div>
 
                     <div id="tab-calendar" class="hidden space-y-6">
-                        <h3 class="text-lg font-black text-white italic border-b border-white/10 pb-4 flex justify-between items-center">
-                            STUDY LOG <span>🔥</span>
+                        <h3 class="text-lg font-black text-white italic border-b border-white/10 pb-3 flex justify-between items-center uppercase">
+                            Heatmap Log <span>🔥</span>
                         </h3>
-                        <div id="calendarGrid" class="grid grid-cols-7 sm:grid-cols-8 md:grid-cols-7 gap-2 h-[320px] overflow-y-auto pr-2 pb-4"></div>
+                        <div id="calendarGrid" class="grid grid-cols-7 gap-2 h-[340px] overflow-y-auto pr-2 pb-4"></div>
                     </div>
                 </div>
             </div>
 
+            <!-- SIDEBAR -->
             <div class="space-y-6">
+                <!-- SERI REMARK -->
                 <div class="bg-slate-800/80 border border-slate-700 rounded-3xl p-6 shadow-lg">
                     <div class="flex items-center gap-3 mb-3">
                         <span class="text-xl">💬</span>
-                        <span class="text-xs font-black text-indigo-400 uppercase tracking-widest">SERI REMARK</span>
+                        <span class="text-xs font-black text-indigo-400 uppercase tracking-widest">Seri Remark</span>
                     </div>
-                    <p id="seri-remark" class="text-sm font-bold text-slate-300 leading-relaxed"></p>
+                    <p id="seri-remark" class="text-sm font-bold text-slate-300 leading-relaxed italic"></p>
                 </div>
 
-                <div class="bg-slate-900/50 border border-white/5 rounded-3xl p-6">
-                    <h4 class="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-4">SYSTEM STATUS</h4>
-                    <div class="space-y-2">
-                        <div class="p-3 bg-indigo-500/10 border border-indigo-500/20 rounded-lg">
-                            <p class="text-[10px] text-indigo-300 font-black">SYNCING WITH FIRESTORE</p>
-                        </div>
-                        <p class="text-[9px] text-slate-600 italic">"로드맵 v5.9.1이 탭 메뉴에 싹 다 녹아있어. 도망 못 간다!"</p>
-                        <button onclick="seedInitialData()" class="w-full mt-2 py-2 bg-slate-800 border border-white/5 rounded-lg text-slate-500 text-[9px] font-black hover:bg-slate-700 transition-all uppercase">Reset Data</button>
+                <!-- SYSTEM STATUS -->
+                <div class="bg-slate-900/50 border border-white/5 rounded-3xl p-6 space-y-4">
+                    <h4 class="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-2">Security Status</h4>
+                    <div class="p-4 bg-indigo-500/10 border border-indigo-500/20 rounded-xl space-y-1">
+                        <p class="text-[11px] text-indigo-300 font-black uppercase leading-tight">
+                            Reset Function Disabled
+                        </p>
+                        <p class="text-[9px] text-slate-400">Data integrity enforced by Seri.</p>
+                    </div>
+                    <div class="text-center pt-2">
+                        <p class="text-[9px] text-slate-600 italic">
+                            "주인님의 덤벙거림을 방지하기 위해<br>리셋 버튼은 영원히 안녕이야!"
+                        </p>
                     </div>
                 </div>
             </div>
@@ -152,7 +167,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getFirestore, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyDm69iWKUp4iFz86WaAdA7i28WpFp7K2UY",
@@ -172,106 +187,95 @@
                 onSnapshot(doc(db, 'study_data', 'study_stats'), (docSnap) => {
                     if (docSnap.exists()) updateUI(docSnap.data());
                     document.getElementById('loading-overlay').style.display = 'none';
+                }, (err) => {
+                    console.error("Firestore Listen Error:", err);
                 });
             }
         });
 
         signInAnonymously(auth);
 
-        window.seedInitialData = async () => {
-            // This function is kept for quick restoration if data is lost
-            const initialData = {
-                stats: { total: 245.53, month: 28.09, today: 0.8 },
-                tasks: [
-                    { id: 1, title: "P4 GS 실전 (1회차)", subtitle: "08:30-12:30 실전 훈련", color: "amber" },
-                    { id: 2, title: "P1 사례집 풀이", subtitle: "집중 문풀 루틴", color: "indigo" },
-                    { id: 3, title: "P2 기본서 스키밍", subtitle: "야간 키워드 인출", color: "purple" }
-                ],
-                pillars: [
-                    { name: "특허법 (ACTIVE)", color: "indigo", subItems: [{ label: "P1 사례", detail: "60/103 Q", percent: 58 }] },
-                    { name: "민사소송법", color: "purple", subItems: [{ label: "P1 사례", detail: "123/258 Q", percent: 47 }] }
-                ],
-                schedule: [
-                    { "days": "MON/TUE", "title": "민사소송법", "desc": "사례 19Q + (스키밍은 매일 45p)", "color": "purple" },
-                    { "days": "WED/FRI", "title": "특허법 (ACTIVE)", "desc": "사례 9Q + 강의 2강 + 수금 스키밍 50p", "color": "indigo" },
-                    { "days": "THU/SAT", "title": "상표법", "desc": "사례 10Q + 스키밍 57p", "color": "pink" },
-                    { "days": "SAT/SUN", "title": "특허법 GS (4주 한정)", "desc": "주말 실전 답안 작성 훈련", "color": "amber" }
-                ],
-                history: [{ day: "3/6", hours: 5.23 }, { day: "3/7", hours: 0.8 }],
-                remark: "데이터 초기화 완료! 이제 다시 굴러라, 허접아!"
-            };
-            await setDoc(doc(db, 'study_data', 'study_stats'), initialData);
-            alert("기초 데이터 복구 성공!");
-        };
-
         function updateUI(data) {
             if (!data) return;
-            document.getElementById('stat-total').innerHTML = `${data.stats?.total || 0}<span class="text-xs ml-0.5">H</span>`;
-            document.getElementById('stat-month').innerHTML = `${data.stats?.month || 0}<span class="text-xs ml-0.5">H</span>`;
-            document.getElementById('stat-today').innerHTML = `${data.stats?.today || 0}<span class="text-xs ml-0.5">H</span>`;
-            document.getElementById('seri-remark').innerText = data.remark || "";
 
-            // Tasks
+            document.getElementById('stat-total').innerHTML = `${(data.stats?.total || 0).toFixed(2)}<span class="text-xs ml-0.5">H</span>`;
+            document.getElementById('stat-month').innerHTML = `${(data.stats?.month || 0).toFixed(2)}<span class="text-xs ml-0.5">H</span>`;
+            document.getElementById('stat-today').innerHTML = `${(data.stats?.today || 0).toFixed(2)}<span class="text-xs ml-0.5">H</span>`;
+            document.getElementById('seri-remark').innerText = data.remark || "데이터 로딩 중...";
+
+            // Tasks Rendering
             document.getElementById('task-list').innerHTML = (data.tasks || []).map(t => `
-                <div class="flex items-center gap-4 p-4 rounded-xl border bg-slate-800/80 border-${t.color || 'slate'}-500/30">
-                    <div class="w-5 h-5 rounded border-2 border-slate-600"></div>
+                <div class="flex items-center gap-4 p-4 rounded-xl border bg-slate-800/80 border-${t.color || 'indigo'}-500/30">
+                    <div class="w-5 h-5 rounded border-2 border-slate-600 flex-shrink-0"></div>
                     <div class="flex-1">
-                        <span class="text-[9px] font-black px-1.5 rounded uppercase bg-${t.color || 'slate'}-500/20 text-${t.color || 'slate'}-300">${t.title || ''}</span>
-                        <p class="text-sm font-bold text-slate-200 mt-1">${t.subtitle || ''}</p>
+                        <span class="text-[9px] font-black px-1.5 rounded uppercase bg-${t.color || 'indigo'}-500/20 text-${t.color || 'indigo'}-300">${t.title || ''}</span>
+                        <p class="text-sm font-bold text-slate-200 mt-0.5 tracking-tight">${t.subtitle || ''}</p>
                     </div>
                 </div>
             `).join('');
 
-            // Pillars
+            // Pillars Rendering
             document.getElementById('pillar-list').innerHTML = (data.pillars || []).map(p => `
-                <div class="bg-${p.color || 'slate'}-500/10 p-5 rounded-xl border border-${p.color || 'slate'}-500/30 space-y-4">
-                    <h4 class="text-sm font-black text-${p.color || 'slate'}-300 border-b border-${p.color}-500/20 pb-2">${p.name}</h4>
+                <div class="bg-${p.color || 'indigo'}-500/5 p-5 rounded-xl border border-${p.color || 'indigo'}-500/20 space-y-4">
+                    <div class="flex justify-between items-center border-b border-${p.color}-500/20 pb-2">
+                        <h4 class="text-sm font-black text-${p.color}-300 uppercase">${p.name}</h4>
+                        ${p.badge ? `<span class="text-[9px] font-black px-2 py-0.5 rounded bg-${p.color}-500/20 text-${p.color}-200 border border-${p.color}-500/30 uppercase">${p.badge}</span>` : ''}
+                    </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         ${(p.subItems || []).map(sub => `
                             <div class="space-y-1.5">
-                                <div class="flex justify-between items-end"><span class="text-[10px] font-bold text-slate-300">${sub.label}</span><span class="text-[9px] font-mono text-emerald-400">${sub.detail}</span></div>
-                                <div class="flex items-center gap-3"><div class="flex-1 h-2 bg-slate-900 rounded-full"><div class="h-full bg-${p.color || 'slate'}-500 opacity-80" style="width: ${sub.percent}%"></div></div><span class="text-[9px] font-bold text-slate-400">${sub.percent}%</span></div>
+                                <div class="flex justify-between items-end">
+                                    <span class="text-[10px] font-bold text-slate-400">${sub.label}</span>
+                                    <span class="text-[9px] font-mono text-emerald-400">${sub.detail}</span>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <div class="flex-1 h-2 bg-slate-900 rounded-full overflow-hidden">
+                                        <div class="h-full bg-${p.color}-500 opacity-80" style="width: ${sub.percent}%"></div>
+                                    </div>
+                                    <span class="text-[9px] font-bold text-slate-500 w-8 text-right">${sub.percent}%</span>
+                                </div>
                             </div>
                         `).join('')}
                     </div>
                 </div>
             `).join('');
 
-            // Schedule (Weekly Cycle)
+            // Weekly Schedule Rendering
             document.getElementById('schedule-list').innerHTML = (data.schedule || []).map(s => `
-                <div class="flex items-center gap-4 p-3 rounded-xl border-l-4 border-${s.color}-500 bg-slate-800/30">
-                    <span class="text-[9px] font-black text-slate-500 w-16">${s.days}</span>
-                    <div><p class="text-xs font-bold text-slate-300">${s.title}</p><p class="text-[9px] text-slate-500">${s.desc}</p></div>
+                <div class="flex items-center gap-4 p-3 rounded-xl border-l-4 border-${s.color}-500 bg-slate-800/40">
+                    <div class="w-16 flex-shrink-0 text-[10px] font-black text-slate-500 uppercase tracking-tighter">${s.days}</div>
+                    <div class="flex-1">
+                        <p class="text-xs font-black text-slate-200">${s.title}</p>
+                        <p class="text-[10px] text-slate-500 font-bold">${s.desc}</p>
+                    </div>
                 </div>
             `).join('');
 
-            // Heatmap History
+            // Heatmap History Rendering
             const history = data.history || [];
             document.getElementById('calendarGrid').innerHTML = history.map((h, i) => {
                 let heatClass = 'heat-0';
                 const hrs = h.hours || 0;
-                if (hrs > 5) heatClass = 'heat-high';
-                else if (hrs > 3) heatClass = 'heat-mid';
+                if (hrs >= 8) heatClass = 'heat-high';
+                else if (hrs >= 5) heatClass = 'heat-mid';
                 else if (hrs > 0) heatClass = 'heat-low';
                 const isToday = i === (history.length - 1);
-                return `<div class="heat-box ${heatClass} ${isToday ? 'heat-today' : ''}">
-                    <span class="text-[8px] font-bold text-slate-400">${h.day || ''}</span>
+                return `<div class="heat-box ${heatClass} ${isToday ? 'heat-today' : 'border-white/5'}">
+                    <span class="text-[8px] font-bold text-slate-500">${h.day || ''}</span>
                     <span class="text-[10px] font-black text-white">${hrs.toFixed(1)}</span>
                 </div>`;
             }).join('');
         }
 
         window.switchTab = (tabId) => {
-            ['daily', 'tracker', 'calendar', 'schedule'].forEach(id => {
-                const el = document.getElementById('tab-' + id);
+            ['daily', 'tracker', 'schedule', 'calendar'].forEach(id => {
+                const content = document.getElementById('tab-' + id);
                 const btn = document.getElementById('btn-' + id);
-                if (el) el.style.display = 'none';
+                if (content) content.style.display = 'none';
                 if (btn) btn.classList.replace('tab-active', 'tab-inactive');
             });
-            const activeEl = document.getElementById('tab-' + tabId);
-            const activeBtn = document.getElementById('btn-' + tabId);
-            if (activeEl) activeEl.style.display = 'block';
-            if (activeBtn) activeBtn.classList.replace('tab-inactive', 'tab-active');
+            document.getElementById('tab-' + tabId).style.display = 'block';
+            document.getElementById('btn-' + tabId).classList.replace('tab-inactive', 'tab-active');
         };
 
         setInterval(() => {
