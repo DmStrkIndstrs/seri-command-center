@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>✨AI SERI PRO v37.8 (No Reset Protocol)</title>
+    <title>✨AI SERI PRO v38.1 (Strikethrough Edition)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
@@ -55,9 +55,9 @@
 <body class="flex flex-col items-center">
 
     <!-- Loading Screen -->
-    <div id="loading-overlay" class="fixed inset-0 bg-slate-900 z-50 flex flex-col items-center justify-center gap-4">
+    <div id="loading-overlay" class="fixed inset-0 bg-slate-900 z-50 flex flex-col items-center justify-center gap-4 transition-opacity duration-300">
         <div id="loading-spinner" class="w-12 h-12 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
-        <div id="loading-text" class="font-black text-indigo-500 italic tracking-[0.3em] uppercase">Securing Protocol...</div>
+        <div id="loading-text" class="font-black text-indigo-500 italic tracking-[0.3em] uppercase">Syncing Protocol...</div>
     </div>
 
     <div class="w-full max-w-5xl space-y-6">
@@ -65,8 +65,8 @@
         <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 px-4 border-b border-slate-700/50 pb-6">
             <div>
                 <div class="flex items-center gap-2 mb-2">
-                    <span id="status-tag" class="bg-emerald-500/20 text-emerald-400 text-[10px] font-black px-2 py-0.5 rounded border border-emerald-500/30 uppercase">
-                        ● System Master Active
+                    <span id="status-tag" class="bg-emerald-500/20 text-emerald-400 text-[10px] font-black px-2 py-0.5 rounded border border-emerald-500/30 uppercase animate-pulse">
+                        ● Live Sync Active
                     </span>
                     <span id="clock" class="text-slate-500 text-[10px] font-bold tracking-widest"></span>
                 </div>
@@ -74,7 +74,7 @@
                     Command <span class="text-indigo-500">Center</span>
                 </h1>
                 <p class="text-xs font-bold text-slate-500 mt-2 tracking-wide uppercase">
-                    v5.9.1 Roadmap Integrated Environment
+                    v38.1 Strikethrough Edition
                 </p>
             </div>
 
@@ -99,7 +99,7 @@
             <div class="lg:col-span-2 space-y-6">
                 <!-- TABS -->
                 <div class="flex gap-2 p-1 bg-slate-800/50 rounded-xl border border-white/5 w-fit overflow-x-auto">
-                    <button onclick="switchTab('daily')" id="btn-daily" class="tab-btn tab-active">🎯 DAILY</button>
+                    <button onclick="switchTab('daily')" id="btn-daily" class="tab-btn tab-active">🎯 DAILY MISSION</button>
                     <button onclick="switchTab('tracker')" id="btn-tracker" class="tab-btn tab-inactive">📊 PILLARS</button>
                     <button onclick="switchTab('schedule')" id="btn-schedule" class="tab-btn tab-inactive">🗓️ WEEKLY</button>
                     <button onclick="switchTab('calendar')" id="btn-calendar" class="tab-btn tab-inactive">🔥 HISTORY</button>
@@ -108,23 +108,27 @@
                 <!-- CONTENT AREA -->
                 <div class="bg-slate-900/60 border border-white/10 rounded-3xl p-6 shadow-2xl relative min-h-[450px]">
                     
+                    <!-- 탭: 일일 미션 -->
                     <div id="tab-daily" class="space-y-5 block">
                         <h3 class="text-lg font-black text-white italic border-b border-white/10 pb-3 flex items-center gap-2 uppercase">
-                            <span class="text-indigo-500">⚡</span> Mission Protocol (Saturday)
+                            <span class="text-indigo-500">⚡</span> Mission Protocol
                         </h3>
                         <div id="task-list" class="space-y-3 h-[340px] overflow-y-auto pr-2"></div>
                     </div>
 
+                    <!-- 탭: 진도율 -->
                     <div id="tab-tracker" class="hidden space-y-6">
                         <h3 class="text-lg font-black text-white italic border-b border-white/10 pb-3 uppercase tracking-tight">Core Pillar Progress</h3>
                         <div id="pillar-list" class="space-y-6 h-[340px] overflow-y-auto pr-2"></div>
                     </div>
 
+                    <!-- 탭: 위클리 스케줄 -->
                     <div id="tab-schedule" class="hidden space-y-4">
                         <h3 class="text-lg font-black text-white italic border-b border-white/10 pb-3 uppercase">Weekly Interleaving Cycle</h3>
                         <div id="schedule-list" class="grid grid-cols-1 gap-3 h-[340px] overflow-y-auto pr-2"></div>
                     </div>
 
+                    <!-- 탭: 히스토리 -->
                     <div id="tab-calendar" class="hidden space-y-6">
                         <h3 class="text-lg font-black text-white italic border-b border-white/10 pb-3 flex justify-between items-center uppercase">
                             Heatmap Log <span>🔥</span>
@@ -140,23 +144,23 @@
                 <div class="bg-slate-800/80 border border-slate-700 rounded-3xl p-6 shadow-lg">
                     <div class="flex items-center gap-3 mb-3">
                         <span class="text-xl">💬</span>
-                        <span class="text-xs font-black text-indigo-400 uppercase tracking-widest">Seri Remark</span>
+                        <span class="text-xs font-black text-indigo-400 uppercase tracking-widest">Seri's Voice</span>
                     </div>
                     <p id="seri-remark" class="text-sm font-bold text-slate-300 leading-relaxed italic"></p>
                 </div>
 
                 <!-- SYSTEM STATUS -->
                 <div class="bg-slate-900/50 border border-white/5 rounded-3xl p-6 space-y-4">
-                    <h4 class="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-2">Security Status</h4>
-                    <div class="p-4 bg-indigo-500/10 border border-indigo-500/20 rounded-xl space-y-1">
-                        <p class="text-[11px] text-indigo-300 font-black uppercase leading-tight">
-                            Reset Function Disabled
+                    <h4 class="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-2">Live Data Link</h4>
+                    <div class="p-4 bg-emerald-500/10 border border-emerald-500/20 rounded-xl space-y-1">
+                        <p class="text-[11px] text-emerald-400 font-black uppercase leading-tight">
+                            Firebase Connected
                         </p>
-                        <p class="text-[9px] text-slate-400">Data integrity enforced by Seri.</p>
+                        <p class="text-[9px] text-slate-400">Listening to Updater v4 changes.</p>
                     </div>
                     <div class="text-center pt-2">
                         <p class="text-[9px] text-slate-600 italic">
-                            "주인님의 덤벙거림을 방지하기 위해<br>리셋 버튼은 영원히 안녕이야!"
+                            "취소선 쫙쫙 그어줄 테니까<br>남은 빚더미도 마저 박살내!"
                         </p>
                     </div>
                 </div>
@@ -186,7 +190,13 @@
             if (user) {
                 onSnapshot(doc(db, 'study_data', 'study_stats'), (docSnap) => {
                     if (docSnap.exists()) updateUI(docSnap.data());
-                    document.getElementById('loading-overlay').style.display = 'none';
+                    
+                    // Fade out loading screen smoothly
+                    const loader = document.getElementById('loading-overlay');
+                    if(loader) {
+                        loader.style.opacity = '0';
+                        setTimeout(() => loader.style.display = 'none', 300);
+                    }
                 }, (err) => {
                     console.error("Firestore Listen Error:", err);
                 });
@@ -201,20 +211,53 @@
             document.getElementById('stat-total').innerHTML = `${(data.stats?.total || 0).toFixed(2)}<span class="text-xs ml-0.5">H</span>`;
             document.getElementById('stat-month').innerHTML = `${(data.stats?.month || 0).toFixed(2)}<span class="text-xs ml-0.5">H</span>`;
             document.getElementById('stat-today').innerHTML = `${(data.stats?.today || 0).toFixed(2)}<span class="text-xs ml-0.5">H</span>`;
-            document.getElementById('seri-remark').innerText = data.remark || "데이터 로딩 중...";
+            document.getElementById('seri-remark').innerText = data.remark || "데이터 수신 중...";
 
-            // Tasks Rendering
-            document.getElementById('task-list').innerHTML = (data.tasks || []).map(t => `
-                <div class="flex items-center gap-4 p-4 rounded-xl border bg-slate-800/80 border-${t.color || 'indigo'}-500/30">
-                    <div class="w-5 h-5 rounded border-2 border-slate-600 flex-shrink-0"></div>
+            // 🔥 도파민 폭발 Task Rendering! (취소선 강화 버전) 🔥
+            document.getElementById('task-list').innerHTML = (data.tasks || []).map(t => {
+                const isDone = t.status === 'completed';
+                
+                // 박스 투명도 살짝 낮추고 테두리 약하게
+                const boxStyle = isDone 
+                    ? 'bg-emerald-900/10 border-emerald-500/20 shadow-none opacity-50 grayscale-[0.3]' 
+                    : `bg-slate-800/80 border-${t.color || 'indigo'}-500/30 shadow-lg`;
+                
+                const checkStyle = isDone 
+                    ? 'bg-emerald-600 border-emerald-600 text-white font-black text-[10px]' 
+                    : 'border-slate-600 bg-transparent';
+                
+                const titleBg = isDone ? 'bg-transparent border border-emerald-500/30' : `bg-${t.color || 'indigo'}-500/20`;
+                
+                // 💥 타이틀이랑 서브타이틀 둘 다 두꺼운 취소선(line-through decoration-2) 적용!
+                const titleText = isDone 
+                    ? 'text-emerald-600 line-through decoration-emerald-500 decoration-2' 
+                    : `text-${t.color || 'indigo'}-300`;
+                    
+                const subText = isDone 
+                    ? 'text-emerald-500/60 line-through decoration-emerald-500/60 decoration-2' 
+                    : 'text-slate-200';
+                
+                const badge = isDone 
+                    ? `<span class="ml-2 text-[8px] font-black text-emerald-500 border border-emerald-500/30 bg-emerald-500/10 px-1.5 py-0.5 rounded shadow-sm">CLEARED</span>` 
+                    : '';
+
+                return `
+                <div class="flex items-center gap-4 p-4 rounded-xl border transition-all duration-300 ${boxStyle}">
+                    <div class="w-5 h-5 rounded border-2 flex items-center justify-center flex-shrink-0 transition-colors ${checkStyle}">
+                        ${isDone ? '✓' : ''}
+                    </div>
                     <div class="flex-1">
-                        <span class="text-[9px] font-black px-1.5 rounded uppercase bg-${t.color || 'indigo'}-500/20 text-${t.color || 'indigo'}-300">${t.title || ''}</span>
-                        <p class="text-sm font-bold text-slate-200 mt-0.5 tracking-tight">${t.subtitle || ''}</p>
+                        <div class="flex items-center mb-0.5">
+                            <span class="text-[9px] font-black px-1.5 py-0.5 rounded uppercase ${titleBg} ${titleText}">${t.title || ''}</span>
+                            ${badge}
+                        </div>
+                        <p class="text-sm font-bold tracking-tight transition-all ${subText}">${t.subtitle || ''}</p>
                     </div>
                 </div>
-            `).join('');
+                `;
+            }).join('');
 
-            // Pillars Rendering
+            // Pillars Rendering (기존과 동일)
             document.getElementById('pillar-list').innerHTML = (data.pillars || []).map(p => `
                 <div class="bg-${p.color || 'indigo'}-500/5 p-5 rounded-xl border border-${p.color || 'indigo'}-500/20 space-y-4">
                     <div class="flex justify-between items-center border-b border-${p.color}-500/20 pb-2">
@@ -285,3 +328,4 @@
     </script>
 </body>
 </html>
+
