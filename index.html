@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>✨AI SERI PRO v39.0 (Calendar Heatmap Edition)</title>
+    <title>✨AI SERI PRO v40.0 (April Calendar Edition)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
@@ -75,7 +75,7 @@
                     Command <span class="text-indigo-500">Center</span>
                 </h1>
                 <p class="text-xs font-bold text-slate-500 mt-2 tracking-wide uppercase">
-                    v39.0 Calendar Heatmap Edition
+                    v40.0 April Calendar Edition 🌸
                 </p>
             </div>
 
@@ -85,7 +85,7 @@
                     <div id="stat-total" class="text-2xl font-black text-indigo-400">0.0<span class="text-xs ml-0.5">H</span></div>
                 </div>
                 <div class="p-3 rounded-xl border border-white/5 bg-slate-800/40 text-center min-w-[80px]">
-                    <div class="text-[9px] font-bold text-slate-500 uppercase">March</div>
+                    <div class="text-[9px] font-bold text-slate-500 uppercase">April Accum</div>
                     <div id="stat-month" class="text-2xl font-black text-emerald-400">0.0<span class="text-xs ml-0.5">H</span></div>
                 </div>
                 <div class="p-3 rounded-xl border border-amber-500/30 bg-amber-500/10 text-center min-w-[80px] shadow-lg shadow-amber-500/20">
@@ -133,7 +133,7 @@
                     <div id="tab-calendar" class="hidden space-y-4">
                         <div class="flex justify-between items-center border-b border-white/10 pb-3">
                             <h3 class="text-lg font-black text-white italic uppercase">
-                                March 2026 Log <span>🔥</span>
+                                April 2026 Log <span>🌸🔥</span>
                             </h3>
                             <div class="flex gap-2 text-[9px] font-bold text-slate-400">
                                 <span class="flex items-center gap-1"><div class="w-2 h-2 bg-[rgba(99,102,241,0.15)] border border-[rgba(99,102,241,0.3)] rounded-sm"></div> < 5H</span>
@@ -168,7 +168,7 @@
                     </div>
                     <div class="text-center pt-2">
                         <p class="text-[9px] text-slate-600 italic">
-                            "달력 채우는 맛 좀 볼래?<br>초록불 꽉 찰 때까지 달려보자!"
+                            "4월 달력 업데이트 완료!<br>이제 잃어버린 시간 다 보일 거다!"
                         </p>
                     </div>
                 </div>
@@ -299,7 +299,7 @@
                 </div>
             `).join('');
 
-            // 🔥 캘린더 히트맵 (달력 레이아웃) 생성 로직 🔥
+            // 🔥 캘린더 히트맵 (4월 달력 레이아웃 수정) 🔥
             const historyMap = {};
             (data.history || []).forEach(h => {
                 historyMap[h.day] = h.hours;
@@ -308,14 +308,19 @@
             const monthNames = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
             let calHtml = '';
             
-            // 요일 헤더 추가
+            // 요일 헤더
             monthNames.forEach(day => {
                 calHtml += `<div class="text-center text-[9px] font-black text-slate-500 mb-1 border-b border-slate-700 pb-1">${day}</div>`;
             });
 
-            // 2026년 3월 기준: 1일은 일요일(Sunday), 총 31일
-            for(let i=1; i<=31; i++) {
-                const dayKey = `3/${i}`;
+            // 2026년 4월 1일은 수요일(Wednesday)이므로 앞에 3칸(일, 월, 화)을 비워야 해!
+            for(let i=0; i<3; i++) {
+                calHtml += `<div class="heat-box opacity-10 border-white/5"><span class="text-[9px] font-bold text-slate-700">-</span></div>`;
+            }
+
+            // 4월 1일 ~ 30일 렌더링
+            for(let i=1; i<=30; i++) {
+                const dayKey = `4/${i}`;
                 const hrs = historyMap[dayKey];
                 let heatClass = 'heat-0';
                 let displayHrs = '';
@@ -327,7 +332,8 @@
                     else if (hrs > 0) heatClass = 'heat-low';
                 }
 
-                const isToday = (dayKey === "3/18"); // 오늘 날짜 3/18 하드코딩 (시뮬레이션 용)
+                // 오늘 날짜 하이라이트 (데이터 기준 오늘 날짜 4/6 설정)
+                const isToday = (dayKey === "4/6"); 
 
                 calHtml += `<div class="heat-box ${heatClass} ${isToday ? 'heat-today' : 'border-white/5'}">
                     <span class="text-[9px] font-bold ${isToday ? 'text-amber-400' : 'text-slate-500'}">${i}</span>
@@ -335,8 +341,8 @@
                 </div>`;
             }
             
-            // 빈 칸 채우기 (31일 -> 35칸, 4칸 부족)
-            for(let i=32; i<=35; i++) {
+            // 빈 칸 채우기 (앞 3칸 + 30일 = 33칸. 총 35칸을 맞추기 위해 뒤에 2칸 빈 공간)
+            for(let i=0; i<2; i++) {
                  calHtml += `<div class="heat-box opacity-10 border-white/5"><span class="text-[9px] font-bold text-slate-700">-</span></div>`;
             }
             document.getElementById('calendarGrid').innerHTML = calHtml;
