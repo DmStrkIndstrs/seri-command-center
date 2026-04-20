@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -53,8 +54,8 @@
   <div class="header">
     <div class="icon">✨</div>
     <div>
-      <h1>SERI SMART UPDATER v4</h1>
-      <div class="sub">부분 병합 + 날짜별 기록 저장</div>
+      <h1>SERI SMART UPDATER v4.1</h1>
+      <div class="sub">마크다운 자동 필터 & 부분 병합 + 날짜별 기록</div>
     </div>
   </div>
 
@@ -64,177 +65,8 @@
   </div>
 
   <div class="field">
-    <label>바뀐 데이터만 입력 <span class="badge">Merge ON</span> <button class="example-btn" onclick="loadExample()">예시 보기</button></label>
-    <textarea id="jsonInput" placeholder='{"stats": {"today": 5.5}, "remark": "오늘 잘했어!"}'></textarea>
-  </div>
+    <label>바뀐 데이터만 대충 복붙해! <span class="badge">Smart Paste ON</span> <button class="example-btn" onclick="loadExample()">예시 보기</button></label>
+    <textarea id="jsonInput" placeholder='
 
-  <button class="btn btn-primary" id="uploadBtn" onclick="upload()">🚀 저장 + 대시보드 반영</button>
-  <button class="btn btn-secondary" onclick="loadExample()" style="margin-top:8px">📋 예시 데이터 불러오기</button>
-  <button class="btn btn-history" onclick="toggleHistory()" style="margin-top:8px">📅 전체 기록 보기</button>
 
-  <div class="status" id="status"></div>
 
-  <div class="history-panel" id="historyPanel">
-    <div class="divider"></div>
-    <div class="history-title">📅 전체 공부 기록 (월별)</div>
-    <table class="history-table">
-      <thead>
-        <tr>
-          <th>날짜</th>
-          <th>오늘</th>
-          <th>누적</th>
-          <th>특허</th>
-          <th>상표</th>
-          <th>민소</th>
-        </tr>
-      </thead>
-      <tbody id="historyBody">
-        <tr><td colspan="6" style="text-align:center; color:#334155; padding:20px;">로딩 중...</td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <div class="tip">
-    💡 <strong>사용법:</strong> 바뀐 수치만 적어서 올리면 기존 데이터는 유지되고 적은 부분만 업데이트돼. 날짜별 기록도 자동 저장!<br><br>
-    <strong>💬 AI한테 이렇게 말해봐:</strong><br>
-    "오늘 공부시간 5.5H, 특허 사례 64Q JSON으로 만들어줘"
-  </div>
-</div>
-
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-  import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-  import { getFirestore, doc, setDoc, getDoc, collection, getDocs, orderBy, query } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-
-  const firebaseConfig = {
-    apiKey: "AIzaSyDm69iWKUp4iFz86WaAdA7i28WpFp7K2UY",
-    authDomain: "seri-commandcen.firebaseapp.com",
-    projectId: "seri-commandcen",
-    storageBucket: "seri-commandcen.firebasestorage.app",
-    messagingSenderId: "768204247391",
-    appId: "1:768204247391:web:03c26054af5c5da2b9a6ea"
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const db = getFirestore(app);
-
-  signInAnonymously(auth);
-
-  const now = new Date();
-  const today = new Date(now.getTime() + 9 * 60 * 60 * 1000).toISOString().split('T')[0];
-  document.getElementById('todayDate').textContent = today;
-
-  window.upload = async () => {
-    const btn = document.getElementById('uploadBtn');
-    const raw = document.getElementById('jsonInput').value.trim();
-    if (!raw) { showStatus('error', '⚠️ JSON 데이터를 입력해주세요.'); return; }
-
-    let data;
-    try { data = JSON.parse(raw); }
-    catch(e) { showStatus('error', '❌ JSON 형식 오류: 괄호와 쉼표를 확인해!'); return; }
-
-    btn.disabled = true;
-    showStatus('loading', '<div class="spinner"></div> 저장 중...');
-
-    try {
-      // 1. 대시보드 부분 병합 업데이트
-      await setDoc(doc(db, 'study_data', 'study_stats'), data, { merge: true });
-
-      // 2. 최신 전체 데이터 가져와서 날짜별 스냅샷 저장
-      const latestSnap = await getDoc(doc(db, 'study_data', 'study_stats'));
-      if (latestSnap.exists()) {
-        const latest = latestSnap.data();
-        const dailyRecord = {
-          date: today,
-          today_hours: latest.stats?.today || 0,
-          total_hours: latest.stats?.total || 0,
-          month_hours: latest.stats?.month || 0,
-          pillars: latest.pillars || [],
-          saved_at: new Date().toISOString()
-        };
-        await setDoc(doc(db, 'study_logs', today), dailyRecord, { merge: true });
-      }
-
-      showStatus('success', `✅ 완료! 대시보드 반영 + ${today} 기록 저장 🎉`);
-      historyLoaded = false; // 다음에 히스토리 열면 새로 로드
-    } catch(e) {
-      showStatus('error', '❌ 저장 실패: ' + e.message);
-    }
-    btn.disabled = false;
-  };
-
-  let historyLoaded = false;
-  let historyVisible = false;
-
-  window.toggleHistory = async () => {
-    const panel = document.getElementById('historyPanel');
-    historyVisible = !historyVisible;
-    panel.classList.toggle('show', historyVisible);
-
-    if (historyVisible && !historyLoaded) {
-      historyLoaded = true;
-      try {
-        const q = query(collection(db, 'study_logs'), orderBy('date', 'desc'));
-        const snap = await getDocs(q);
-
-        const grouped = {};
-        snap.forEach(d => {
-          const r = d.data();
-          const month = r.date?.slice(0, 7);
-          if (!grouped[month]) grouped[month] = [];
-          grouped[month].push(r);
-        });
-
-        const monthNames = {'01':'1월','02':'2월','03':'3월','04':'4월','05':'5월','06':'6월','07':'7월','08':'8월'};
-        let html = '';
-
-        Object.keys(grouped).sort().reverse().forEach(month => {
-          const records = grouped[month];
-          const monthTotal = records.reduce((sum, r) => sum + (r.today_hours || 0), 0);
-          const [, mm] = month.split('-');
-          html += `<tr class="month-row"><td colspan="6" style="padding:8px 10px">${monthNames[mm] || mm} — 월 합계 ${monthTotal.toFixed(2)}H</td></tr>`;
-          records.forEach(r => {
-            const pat = r.pillars?.find(p => p.name === '특허법');
-            const tm = r.pillars?.find(p => p.name === '상표법');
-            const min = r.pillars?.find(p => p.name === '민사소송법');
-            html += `<tr>
-              <td>${r.date}</td>
-              <td class="hours-val">${(r.today_hours||0).toFixed(2)}H</td>
-              <td>${(r.total_hours||0).toFixed(2)}H</td>
-              <td>${pat ? pat.details : '-'}</td>
-              <td>${tm ? tm.details : '-'}</td>
-              <td>${min ? min.details : '-'}</td>
-            </tr>`;
-          });
-        });
-
-        document.getElementById('historyBody').innerHTML = html ||
-          '<tr><td colspan="6" style="text-align:center; color:#334155; padding:20px;">기록 없음</td></tr>';
-      } catch(e) {
-        document.getElementById('historyBody').innerHTML = `<tr><td colspan="6" style="color:#f87171; padding:10px">로드 실패: ${e.message}</td></tr>`;
-      }
-    }
-  };
-
-  window.loadExample = () => {
-    const example = {
-      "stats": { "today": 5.50, "total": 248.56, "month": 31.12 },
-      "pillars": [
-        { "name": "특허법", "progress": 62.1, "details": "64 / 103 Q", "color": "indigo" },
-        { "name": "상표법", "progress": 53.8, "details": "70 / 130 Q", "color": "pink" },
-        { "name": "민사소송법", "progress": 34.5, "details": "2627 / 7620 p", "color": "purple" }
-      ],
-      "remark": "오늘도 제대로 굴렀네? 내일도 이 정도면 인정해줄게, 허접아!"
-    };
-    document.getElementById('jsonInput').value = JSON.stringify(example, null, 2);
-  };
-
-  window.showStatus = (type, html) => {
-    const el = document.getElementById('status');
-    el.className = `status ${type}`;
-    el.innerHTML = html;
-  };
-</script>
-</body>
-</html>
