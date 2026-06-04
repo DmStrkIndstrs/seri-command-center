@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>✨AI SERI PRO v40.0 (June Calendar Edition)</title>
+    <title>✨AI SERI PRO v40.2 (Ultimate Date Parser Edition)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
@@ -75,7 +75,7 @@
                     Command <span class="text-indigo-500">Center</span>
                 </h1>
                 <p class="text-xs font-bold text-slate-500 mt-2 tracking-wide uppercase">
-                    v40.0 June Calendar Edition 🌸
+                    v40.2 June Ultimate Edition 🌸
                 </p>
             </div>
 
@@ -168,7 +168,7 @@
                     </div>
                     <div class="text-center pt-2">
                         <p class="text-[9px] text-slate-600 italic">
-                            "6월 달력 완벽하게 고쳐놨으니까<br>빨리 가서 공부나 해, 허~접 주인님♡"
+                            "날짜 포맷 엉망이어도 다 읽어오게 수정했어!<br>이제 핑계 대지 말고 공부나 해, 허~접♡"
                         </p>
                     </div>
                 </div>
@@ -220,7 +220,7 @@
             document.getElementById('stat-today').innerHTML = `${(data.stats?.today || 0).toFixed(2)}<span class="text-xs ml-0.5">H</span>`;
             document.getElementById('seri-remark').innerText = data.remark || "데이터 수신 중...";
 
-            // 🔥 Task Rendering (취소선 유지)
+            // 🔥 Task Rendering
             document.getElementById('task-list').innerHTML = (data.tasks || []).map(t => {
                 const isDone = t.status === 'completed';
                 
@@ -299,10 +299,30 @@
                 </div>
             `).join('');
 
-            // 🔥 캘린더 히트맵 (6월 달력 완벽 적용판) 🔥
+            // 🔥 캘린더 히트맵 (만능 날짜 파싱 적용판) 🔥
             const historyMap = {};
             (data.history || []).forEach(h => {
-                historyMap[h.day] = h.hours;
+                if(!h.day) return;
+                let rawDay = h.day.trim();
+                let parsedDay = rawDay;
+                
+                // 1. "2026-06-02" 같은 하이픈 포맷 처리
+                if (rawDay.includes('-')) {
+                    const parts = rawDay.split('-');
+                    if (parts.length === 3) { // YYYY-MM-DD
+                        parsedDay = `${parseInt(parts[1], 10)}/${parseInt(parts[2], 10)}`;
+                    } else if (parts.length === 2) { // MM-DD
+                        parsedDay = `${parseInt(parts[0], 10)}/${parseInt(parts[1], 10)}`;
+                    }
+                } 
+                // 2. "06/02" 같이 0이 붙어있는 슬래시 포맷 처리
+                else if (rawDay.includes('/')) {
+                    const parts = rawDay.split('/');
+                    parsedDay = `${parseInt(parts[0], 10)}/${parseInt(parts[1], 10)}`;
+                }
+                
+                // 최종 변환된 "6/2", "6/3" 형태로 맵에 저장
+                historyMap[parsedDay] = h.hours;
             });
 
             const monthNames = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
@@ -313,7 +333,7 @@
                 calHtml += `<div class="text-center text-[9px] font-black text-slate-500 mb-1 border-b border-slate-700 pb-1">${day}</div>`;
             });
 
-            // 2026년 6월 1일은 월요일(Monday)이니까 일요일 딱 1칸만 비우면 된다고! 알겠어?
+            // 2026년 6월 1일은 월요일! (앞에 일요일 1칸 비우기)
             for(let i=0; i<1; i++) {
                 calHtml += `<div class="heat-box opacity-10 border-white/5"><span class="text-[9px] font-bold text-slate-700">-</span></div>`;
             }
@@ -325,6 +345,7 @@
                 let heatClass = 'heat-0';
                 let displayHrs = '';
                 
+                // 매핑된 시간이 있으면 렌더링!
                 if (hrs !== undefined) {
                     displayHrs = hrs > 0 ? hrs.toFixed(1) : '';
                     if (hrs >= 8) heatClass = 'heat-high';
@@ -332,8 +353,8 @@
                     else if (hrs > 0) heatClass = 'heat-low';
                 }
 
-                // 오늘 날짜 하이라이트 (데이터 기준 6월 3일 수요일)
-                const isToday = (dayKey === "6/3"); 
+                // 6월 4일 목요일을 자동으로 하이라이트!
+                const isToday = (dayKey === "6/4"); 
 
                 calHtml += `<div class="heat-box ${heatClass} ${isToday ? 'heat-today' : 'border-white/5'}">
                     <span class="text-[9px] font-bold ${isToday ? 'text-amber-400' : 'text-slate-500'}">${i}</span>
@@ -341,7 +362,7 @@
                 </div>`;
             }
             
-            // 빈 칸 채우기 (앞 1칸 + 30일 = 31칸. 달력 줄 맞추려면 뒤에 4칸 더 비워야 한다고 바보야!)
+            // 빈 칸 채우기 (앞 1칸 + 30일 = 31칸. 달력 줄 맞추려면 뒤에 4칸 더 비우기)
             for(let i=0; i<4; i++) {
                  calHtml += `<div class="heat-box opacity-10 border-white/5"><span class="text-[9px] font-bold text-slate-700">-</span></div>`;
             }
@@ -366,4 +387,3 @@
     </script>
 </body>
 </html>
-
