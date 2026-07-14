@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>✨AI SERI PRO v40.2 (Ultimate Date Parser Edition)</title>
+    <title>✨AI SERI PRO v40.3 (Invincible July Edition)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
@@ -75,7 +75,7 @@
                     Command <span class="text-indigo-500">Center</span>
                 </h1>
                 <p class="text-xs font-bold text-slate-500 mt-2 tracking-wide uppercase">
-                    v40.2 June Ultimate Edition 🌸
+                    v40.3 July Invincible Edition 🌸🔥
                 </p>
             </div>
 
@@ -85,7 +85,7 @@
                     <div id="stat-total" class="text-2xl font-black text-indigo-400">0.0<span class="text-xs ml-0.5">H</span></div>
                 </div>
                 <div class="p-3 rounded-xl border border-white/5 bg-slate-800/40 text-center min-w-[80px]">
-                    <div class="text-[9px] font-bold text-slate-500 uppercase">June Accum</div>
+                    <div class="text-[9px] font-bold text-slate-500 uppercase">July Accum</div>
                     <div id="stat-month" class="text-2xl font-black text-emerald-400">0.0<span class="text-xs ml-0.5">H</span></div>
                 </div>
                 <div class="p-3 rounded-xl border border-amber-500/30 bg-amber-500/10 text-center min-w-[80px] shadow-lg shadow-amber-500/20">
@@ -133,7 +133,7 @@
                     <div id="tab-calendar" class="hidden space-y-4">
                         <div class="flex justify-between items-center border-b border-white/10 pb-3">
                             <h3 class="text-lg font-black text-white italic uppercase">
-                                June 2026 Log <span>🌸🔥</span>
+                                July 2026 Log <span>🌸🔥</span>
                             </h3>
                             <div class="flex gap-2 text-[9px] font-bold text-slate-400">
                                 <span class="flex items-center gap-1"><div class="w-2 h-2 bg-[rgba(99,102,241,0.15)] border border-[rgba(99,102,241,0.3)] rounded-sm"></div> < 5H</span>
@@ -160,15 +160,15 @@
                 <!-- SYSTEM STATUS -->
                 <div class="bg-slate-900/50 border border-white/5 rounded-3xl p-6 space-y-4">
                     <h4 class="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-2">Live Data Link</h4>
-                    <div class="p-4 bg-emerald-500/10 border border-emerald-500/20 rounded-xl space-y-1">
-                        <p class="text-[11px] text-emerald-400 font-black uppercase leading-tight">
+                    <div id="connection-status" class="p-4 bg-emerald-500/10 border border-emerald-500/20 rounded-xl space-y-1 transition-colors">
+                        <p id="connection-text" class="text-[11px] text-emerald-400 font-black uppercase leading-tight">
                             Firebase Connected
                         </p>
                         <p class="text-[9px] text-slate-400">Listening to Updater v4 changes.</p>
                     </div>
                     <div class="text-center pt-2">
                         <p class="text-[9px] text-slate-600 italic">
-                            "날짜 포맷 엉망이어도 다 읽어오게 수정했어!<br>이제 핑계 대지 말고 공부나 해, 허~접♡"
+                            "어떤 쓰레기 데이터를 넣어도 안 뻗게 무적 패치 완료!<br>쿠팡 끄고 공부나 해, 허~접♡"
                         </p>
                     </div>
                 </div>
@@ -194,49 +194,84 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
+        // 방어 코드: 로딩 화면 안전하게 끄기 함수
+        const hideLoader = () => {
+            const loader = document.getElementById('loading-overlay');
+            if(loader && loader.style.display !== 'none') {
+                loader.style.opacity = '0';
+                setTimeout(() => loader.style.display = 'none', 300);
+            }
+        };
+
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 onSnapshot(doc(db, 'study_data', 'study_stats'), (docSnap) => {
-                    if (docSnap.exists()) updateUI(docSnap.data());
-                    
-                    const loader = document.getElementById('loading-overlay');
-                    if(loader) {
-                        loader.style.opacity = '0';
-                        setTimeout(() => loader.style.display = 'none', 300);
+                    try {
+                        if (docSnap.exists()) {
+                            updateUI(docSnap.data());
+                            document.getElementById('connection-status').className = "p-4 bg-emerald-500/10 border border-emerald-500/20 rounded-xl space-y-1 transition-colors";
+                            document.getElementById('connection-text').className = "text-[11px] text-emerald-400 font-black uppercase leading-tight";
+                            document.getElementById('connection-text').innerText = "Firebase Connected";
+                        } else {
+                            document.getElementById('seri-remark').innerText = "🚨 야! 데이터베이스에 문서가 없어! [SERI DATA UPDATER v4]에서 데이터 먼저 쏴!!";
+                        }
+                    } catch (e) {
+                        console.error("UI Update Exception:", e);
+                        document.getElementById('seri-remark').innerText = "🚨 시스템 에러!! 네가 입력한 JSON 데이터 문법이 꼬였거나 타입이 박살 났어! 콘솔 창 열어서 확인해!!";
+                    } finally {
+                        hideLoader(); // 무조건 로딩 화면 해제!!
                     }
                 }, (err) => {
                     console.error("Firestore Listen Error:", err);
+                    document.getElementById('seri-remark').innerText = "🚨 파이어베이스 연결 끊김!! 네트워크 오류거나 일일 읽기 할당량 초과(Quota Exceeded)다! 나중에 다시 켜!";
+                    
+                    document.getElementById('connection-status').className = "p-4 bg-red-500/10 border border-red-500/20 rounded-xl space-y-1 transition-colors";
+                    document.getElementById('connection-text').className = "text-[11px] text-red-400 font-black uppercase leading-tight";
+                    document.getElementById('connection-text').innerText = "Connection Failed";
+                    hideLoader(); // 에러 나도 무조건 로딩 화면 해제!!
                 });
             }
         });
 
-        signInAnonymously(auth);
+        // 인증 에러 시에도 로딩 해제
+        signInAnonymously(auth).catch((error) => {
+            console.error("Auth Error:", error);
+            document.getElementById('seri-remark').innerText = "🚨 로그인 인증 실패! 파이어베이스 설정 확인해!";
+            hideLoader();
+        });
 
         function updateUI(data) {
             if (!data) return;
 
-            document.getElementById('stat-total').innerHTML = `${(data.stats?.total || 0).toFixed(2)}<span class="text-xs ml-0.5">H</span>`;
-            document.getElementById('stat-month').innerHTML = `${(data.stats?.month || 0).toFixed(2)}<span class="text-xs ml-0.5">H</span>`;
-            document.getElementById('stat-today').innerHTML = `${(data.stats?.today || 0).toFixed(2)}<span class="text-xs ml-0.5">H</span>`;
-            document.getElementById('seri-remark').innerText = data.remark || "데이터 수신 중...";
+            // 방어 코드: 데이터 타입 체크
+            const total = parseFloat(data.stats?.total) || 0;
+            const month = parseFloat(data.stats?.month) || 0;
+            const todayStr = data.stats?.today === "OFF" ? "OFF" : (parseFloat(data.stats?.today) || 0).toFixed(2);
 
-            // 🔥 Task Rendering
-            document.getElementById('task-list').innerHTML = (data.tasks || []).map(t => {
+            document.getElementById('stat-total').innerHTML = `${total.toFixed(2)}<span class="text-xs ml-0.5">H</span>`;
+            document.getElementById('stat-month').innerHTML = `${month.toFixed(2)}<span class="text-xs ml-0.5">H</span>`;
+            document.getElementById('stat-today').innerHTML = `${todayStr}${todayStr !== "OFF" ? '<span class="text-xs ml-0.5">H</span>' : ''}`;
+            document.getElementById('seri-remark').innerText = data.remark || "데이터 수신 완료! 공부나 해!";
+
+            // 🔥 Task Rendering (방어 코드 추가)
+            const tasks = Array.isArray(data.tasks) ? data.tasks : [];
+            document.getElementById('task-list').innerHTML = tasks.map(t => {
                 const isDone = t.status === 'completed';
+                const color = t.color || 'indigo';
                 
                 const boxStyle = isDone 
                     ? 'bg-emerald-900/10 border-emerald-500/20 shadow-none opacity-50 grayscale-[0.3]' 
-                    : `bg-slate-800/80 border-${t.color || 'indigo'}-500/30 shadow-lg`;
+                    : `bg-slate-800/80 border-${color}-500/30 shadow-lg`;
                 
                 const checkStyle = isDone 
                     ? 'bg-emerald-600 border-emerald-600 text-white font-black text-[10px]' 
                     : 'border-slate-600 bg-transparent';
                 
-                const titleBg = isDone ? 'bg-transparent border border-emerald-500/30' : `bg-${t.color || 'indigo'}-500/20`;
+                const titleBg = isDone ? 'bg-transparent border border-emerald-500/30' : `bg-${color}-500/20`;
                 
                 const titleText = isDone 
                     ? 'text-emerald-600 line-through decoration-emerald-500 decoration-2' 
-                    : `text-${t.color || 'indigo'}-300`;
+                    : `text-${color}-300`;
                     
                 const subText = isDone 
                     ? 'text-emerald-500/60 line-through decoration-emerald-500/60 decoration-2' 
@@ -253,7 +288,7 @@
                     </div>
                     <div class="flex-1">
                         <div class="flex items-center mb-0.5">
-                            <span class="text-[9px] font-black px-1.5 py-0.5 rounded uppercase ${titleBg} ${titleText}">${t.title || ''}</span>
+                            <span class="text-[9px] font-black px-1.5 py-0.5 rounded uppercase ${titleBg} ${titleText}">${t.title || 'UNKNOWN'}</span>
                             ${badge}
                         </div>
                         <p class="text-sm font-bold tracking-tight transition-all ${subText}">${t.subtitle || ''}</p>
@@ -262,108 +297,111 @@
                 `;
             }).join('');
 
-            // Pillars Rendering
-            document.getElementById('pillar-list').innerHTML = (data.pillars || []).map(p => `
-                <div class="bg-${p.color || 'indigo'}-500/5 p-5 rounded-xl border border-${p.color || 'indigo'}-500/20 space-y-4">
-                    <div class="flex justify-between items-center border-b border-${p.color}-500/20 pb-2">
-                        <h4 class="text-sm font-black text-${p.color}-300 uppercase">${p.name}</h4>
-                        ${p.badge ? `<span class="text-[9px] font-black px-2 py-0.5 rounded bg-${p.color}-500/20 text-${p.color}-200 border border-${p.color}-500/30 uppercase">${p.badge}</span>` : ''}
+            // Pillars Rendering (방어 코드 추가)
+            const pillars = Array.isArray(data.pillars) ? data.pillars : [];
+            document.getElementById('pillar-list').innerHTML = pillars.map(p => {
+                const color = p.color || 'indigo';
+                const subItems = Array.isArray(p.subItems) ? p.subItems : [];
+                return `
+                <div class="bg-${color}-500/5 p-5 rounded-xl border border-${color}-500/20 space-y-4">
+                    <div class="flex justify-between items-center border-b border-${color}-500/20 pb-2">
+                        <h4 class="text-sm font-black text-${color}-300 uppercase">${p.name || ''}</h4>
+                        ${p.badge ? `<span class="text-[9px] font-black px-2 py-0.5 rounded bg-${color}-500/20 text-${color}-200 border border-${color}-500/30 uppercase">${p.badge}</span>` : ''}
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        ${(p.subItems || []).map(sub => `
+                        ${subItems.map(sub => `
                             <div class="space-y-1.5">
                                 <div class="flex justify-between items-end">
-                                    <span class="text-[10px] font-bold text-slate-400">${sub.label}</span>
-                                    <span class="text-[9px] font-mono text-emerald-400">${sub.detail}</span>
+                                    <span class="text-[10px] font-bold text-slate-400">${sub.label || ''}</span>
+                                    <span class="text-[9px] font-mono text-emerald-400">${sub.detail || ''}</span>
                                 </div>
                                 <div class="flex items-center gap-3">
                                     <div class="flex-1 h-2 bg-slate-900 rounded-full overflow-hidden">
-                                        <div class="h-full bg-${p.color}-500 opacity-80" style="width: ${sub.percent}%"></div>
+                                        <div class="h-full bg-${color}-500 opacity-80" style="width: ${parseFloat(sub.percent) || 0}%"></div>
                                     </div>
-                                    <span class="text-[9px] font-bold text-slate-500 w-8 text-right">${sub.percent}%</span>
+                                    <span class="text-[9px] font-bold text-slate-500 w-8 text-right">${parseFloat(sub.percent) || 0}%</span>
                                 </div>
                             </div>
                         `).join('')}
                     </div>
                 </div>
-            `).join('');
+            `}).join('');
 
             // Weekly Schedule Rendering
-            document.getElementById('schedule-list').innerHTML = (data.schedule || []).map(s => `
-                <div class="flex items-center gap-4 p-3 rounded-xl border-l-4 border-${s.color}-500 bg-slate-800/40">
-                    <div class="w-16 flex-shrink-0 text-[10px] font-black text-slate-500 uppercase tracking-tighter">${s.days}</div>
+            const schedules = Array.isArray(data.schedule) ? data.schedule : [];
+            document.getElementById('schedule-list').innerHTML = schedules.map(s => `
+                <div class="flex items-center gap-4 p-3 rounded-xl border-l-4 border-${s.color || 'slate'}-500 bg-slate-800/40">
+                    <div class="w-16 flex-shrink-0 text-[10px] font-black text-slate-500 uppercase tracking-tighter">${s.days || ''}</div>
                     <div class="flex-1">
-                        <p class="text-xs font-black text-slate-200">${s.title}</p>
-                        <p class="text-[10px] text-slate-500 font-bold">${s.desc}</p>
+                        <p class="text-xs font-black text-slate-200">${s.title || ''}</p>
+                        <p class="text-[10px] text-slate-500 font-bold">${s.desc || ''}</p>
                     </div>
                 </div>
             `).join('');
 
-            // 🔥 캘린더 히트맵 (만능 날짜 파싱 적용판) 🔥
+            // 🔥 캘린더 히트맵 (7월 패치 + 강력 방어 코드) 🔥
             const historyMap = {};
-            (data.history || []).forEach(h => {
-                if(!h.day) return;
+            const history = Array.isArray(data.history) ? data.history : [];
+            
+            history.forEach(h => {
+                if(!h.day || typeof h.day !== 'string') return;
                 let rawDay = h.day.trim();
                 let parsedDay = rawDay;
                 
-                // 1. "2026-06-02" 같은 하이픈 포맷 처리
                 if (rawDay.includes('-')) {
                     const parts = rawDay.split('-');
-                    if (parts.length === 3) { // YYYY-MM-DD
-                        parsedDay = `${parseInt(parts[1], 10)}/${parseInt(parts[2], 10)}`;
-                    } else if (parts.length === 2) { // MM-DD
-                        parsedDay = `${parseInt(parts[0], 10)}/${parseInt(parts[1], 10)}`;
-                    }
-                } 
-                // 2. "06/02" 같이 0이 붙어있는 슬래시 포맷 처리
-                else if (rawDay.includes('/')) {
+                    if (parts.length === 3) parsedDay = `${parseInt(parts[1], 10)}/${parseInt(parts[2], 10)}`;
+                    else if (parts.length === 2) parsedDay = `${parseInt(parts[0], 10)}/${parseInt(parts[1], 10)}`;
+                } else if (rawDay.includes('/')) {
                     const parts = rawDay.split('/');
                     parsedDay = `${parseInt(parts[0], 10)}/${parseInt(parts[1], 10)}`;
                 }
-                
-                // 최종 변환된 "6/2", "6/3" 형태로 맵에 저장
                 historyMap[parsedDay] = h.hours;
             });
 
             const monthNames = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
             let calHtml = '';
             
-            // 요일 헤더
             monthNames.forEach(day => {
                 calHtml += `<div class="text-center text-[9px] font-black text-slate-500 mb-1 border-b border-slate-700 pb-1">${day}</div>`;
             });
 
-            // 2026년 6월 1일은 월요일! (앞에 일요일 1칸 비우기)
-            for(let i=0; i<1; i++) {
+            // 🔥 2026년 7월 1일은 수요일! (일, 월, 화 3칸 비우기)
+            for(let i=0; i<3; i++) {
                 calHtml += `<div class="heat-box opacity-10 border-white/5"><span class="text-[9px] font-bold text-slate-700">-</span></div>`;
             }
 
-            // 6월 1일 ~ 30일 렌더링
-            for(let i=1; i<=30; i++) {
-                const dayKey = `6/${i}`;
-                const hrs = historyMap[dayKey];
+            // 7월 1일 ~ 31일 렌더링
+            for(let i=1; i<=31; i++) {
+                const dayKey = `7/${i}`;
+                const rawHrs = historyMap[dayKey];
                 let heatClass = 'heat-0';
                 let displayHrs = '';
                 
-                // 매핑된 시간이 있으면 렌더링!
-                if (hrs !== undefined) {
-                    displayHrs = hrs > 0 ? hrs.toFixed(1) : '';
-                    if (hrs >= 8) heatClass = 'heat-high';
-                    else if (hrs >= 5) heatClass = 'heat-mid';
-                    else if (hrs > 0) heatClass = 'heat-low';
+                // 타입 방어: 숫자로 변환해서 에러 차단
+                if (rawHrs !== undefined && rawHrs !== "OFF") {
+                    const numHrs = parseFloat(rawHrs);
+                    if (!isNaN(numHrs) && numHrs > 0) {
+                        displayHrs = numHrs.toFixed(1);
+                        if (numHrs >= 8) heatClass = 'heat-high';
+                        else if (numHrs >= 5) heatClass = 'heat-mid';
+                        else heatClass = 'heat-low';
+                    } else if (typeof rawHrs === 'string' && isNaN(numHrs)) {
+                        displayHrs = rawHrs.substring(0, 3); // "OFF" 같은 텍스트 처리
+                    }
                 }
 
-                // 6월 4일 목요일을 자동으로 하이라이트!
-                const isToday = (dayKey === "6/4"); 
+                // 7월 14일 화요일 오늘 하이라이트!
+                const isToday = (dayKey === "7/14"); 
 
                 calHtml += `<div class="heat-box ${heatClass} ${isToday ? 'heat-today' : 'border-white/5'}">
                     <span class="text-[9px] font-bold ${isToday ? 'text-amber-400' : 'text-slate-500'}">${i}</span>
-                    <span class="text-[10px] font-black ${hrs !== undefined && hrs > 0 ? 'text-white' : 'text-slate-700'}">${displayHrs}</span>
+                    <span class="text-[10px] font-black ${(displayHrs && displayHrs !== 'OFF') ? 'text-white' : 'text-slate-700'}">${displayHrs}</span>
                 </div>`;
             }
             
-            // 빈 칸 채우기 (앞 1칸 + 30일 = 31칸. 달력 줄 맞추려면 뒤에 4칸 더 비우기)
-            for(let i=0; i<4; i++) {
+            // 빈 칸 채우기 (3 + 31 = 34칸. 35칸(5줄) 맞추려면 1칸 더 비우기)
+            for(let i=0; i<1; i++) {
                  calHtml += `<div class="heat-box opacity-10 border-white/5"><span class="text-[9px] font-bold text-slate-700">-</span></div>`;
             }
             document.getElementById('calendarGrid').innerHTML = calHtml;
@@ -387,3 +425,5 @@
     </script>
 </body>
 </html>
+
+
